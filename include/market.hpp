@@ -1,16 +1,28 @@
 #pragma once
-#include <iostream>
-#include <chrono>
 
-class Market {
+class Market
+{
 public:
-    Market(double interestRate, double volatility, double spotPrice, double dividendPrice, std::chrono::system_clock::time_point dividendExDate)
-        : interestRate(interestRate), volatility(volatility), spotPrice(spotPrice), dividendPrice(dividendPrice), dividendExDate(dividendExDate) {}
+    Market(double interestRate, double volatility, double spotPrice)
+        : interestRate(interestRate), volatility(volatility), spotPrice(spotPrice) {}
+
+    double getInterestRate()
+    {
+        return this->interestRate;
+    }
+
+    double getVolatility()
+    {
+        return this->volatility;
+    }
+
+    double getSpotPrice()
+    {
+        return this->spotPrice;
+    }
 
 private:
     double interestRate;
     double volatility;
     double spotPrice;
-    double dividendPrice;
-    std::chrono::system_clock::time_point dividendExDate;
 };

@@ -1,4 +1,5 @@
 #include "option.hpp"
+#include <ctime>
 
 double Option::payoff(double spot) const
 {
@@ -11,3 +12,13 @@ double Option::payoff(double spot) const
         return std::max(this->strikePrice - spot, 0.0);
     }
 };
+
+ExerciseType Option::getExerciseType()
+{
+    return this->exerciseType;
+}
+
+int Option::getTimeToMaturity() const
+{
+    return this->maturityDate - time(0) / (60 * 60 * 24);
+}
