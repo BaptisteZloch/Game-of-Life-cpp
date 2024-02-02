@@ -13,12 +13,7 @@ double Option::payoff(double spot) const
     }
 };
 
-ExerciseType Option::getExerciseType()
-{
-    return this->exerciseType;
-}
-
 int Option::getTimeToMaturity() const
 {
-    return this->maturityDate - time(0) / (60 * 60 * 24);
+    return (this->maturityDate - time(0)) / 60 / 60 / 24;
 }

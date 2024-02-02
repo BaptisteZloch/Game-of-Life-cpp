@@ -9,16 +9,15 @@
 
 int main()
 {
-    time_t pricing_date = time(0); // get current dat/time with respect to system
 
-    Option callOption(OptionType::Call, ExerciseType::European, 100.0, convertDateStringToCtime("2024-12-26"));
     double spotPrice = 110.0;
+    Option *callOption = new Option(OptionType::Call, ExerciseType::European, 100.0, convertDateStringToCtime("2024-12-26"));
+
+    double optionPayoff = callOption->payoff(spotPrice);
+
+    std::cout << callOption->getExerciseTypeAsString() << " " << callOption->getOptionTypeAsString() << " Option maturing on: " << callOption->getMaturityDateAsString() << "\tPayoff now: " << optionPayoff << "\tCurrent time to maturity: " << callOption->getTimeToMaturity() << std::endl;
     double interestRate = 0.04;
     double volatility = 0.25;
-
-    double optionPayoff = callOption.payoff(spotPrice);
-    std::cout << "Option maturing on:" << callOption.getMaturityDateAsString() << "\nPayoff: " << optionPayoff << std::endl;
-
     Market market(interestRate, volatility, spotPrice);
 
     // int main() {
