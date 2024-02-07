@@ -83,8 +83,12 @@ void GameOfLife::play()
         usleep(100000); // Pause de 100 millisecondes entre les générations
     }
     auto stop = std::chrono::high_resolution_clock::now();
-    std::cout << "Playing the game took: "
-              << (std::chrono::duration_cast<std::chrono::microseconds>(stop - start).count()) / 1000000
+    std::cout << "Game information :\n"
+              << "Grid: " << this->rows
+              << "x" << this->cols
+              << "\tGenerations: " << this->n_generations
+              << "\n\nPlaying the game took: "
+              << (std::chrono::duration_cast<std::chrono::microseconds>(stop - start).count()) / 1000000.0
               << " seconds with " << omp_get_max_threads()
               << " cores in parallel (via OpenMP)"
               << std::endl;

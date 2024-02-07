@@ -18,5 +18,5 @@ void Cell::setState(bool state)
 /// @return The string representation of the cell
 std::string Cell::toString() const
 {
-    return this->state ? "█" : " ";
+    return this->state ? "██" : "  ";
 };
