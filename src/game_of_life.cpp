@@ -1,5 +1,7 @@
-#include "game_of_life.hpp"
 #include <chrono>
+#include <omp.h>
+#include "game_of_life.hpp"
+
 /// @brief Compute the number of alive neighbors for a given cell
 /// @param row The row of the cell
 /// @param col The column of the cell
@@ -31,8 +33,7 @@ short GameOfLife::countNeighbors(int row, int col)
 /// @brief Display the grid on the console
 void GameOfLife::printGrid()
 {
-    system("clear"); // Efface l'écran pour une meilleure visibilité (Linux/Mac)
-    // system("cls");  // Utiliser cette ligne pour Windows
+    system("clear"); // clear console, might be system("cls") on windows
 
     for (int i = 0; i < this->rows; ++i)
     {
@@ -48,12 +49,13 @@ void GameOfLife::printGrid()
 /// @brief Update the grid according to the rules of the game
 void GameOfLife::updateGrid()
 {
-    short neighbors = 0;
+
+#pragma omp parallel for
     for (int i = 0; i < this->rows; ++i)
     {
         for (int j = 0; j < this->cols; ++j)
         {
-            neighbors = this->countNeighbors(i, j);
+            short neighbors = this->countNeighbors(i, j);
 
             if ((*this->grid)[i][j].getState())
             {
@@ -72,6 +74,7 @@ void GameOfLife::updateGrid()
 /// @brief Start and play the game
 void GameOfLife::play()
 {
+    omp_set_num_threads(4); // comment this line to use the maximum number of cores
     auto start = std::chrono::high_resolution_clock::now();
     for (int generation = 1; generation <= this->n_generations; ++generation)
     {
@@ -80,6 +83,9 @@ void GameOfLife::play()
         usleep(100000); // Pause de 100 millisecondes entre les générations
     }
     auto stop = std::chrono::high_resolution_clock::now();
-
-    std::cout << "Playing the game took: " << (std::chrono::duration_cast<std::chrono::microseconds>(stop - start).count()) / 1000 / 1000 << " seconds" << std::endl;
+    std::cout << "Playing the game took: "
+              << (std::chrono::duration_cast<std::chrono::microseconds>(stop - start).count()) / 1000000
+              << " seconds with " << omp_get_max_threads()
+              << " cores in parallel (via OpenMP)"
+              << std::endl;
 }
