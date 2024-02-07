@@ -9,57 +9,56 @@
 class GameOfLife
 {
 public:
-    GameOfLife()
+    /// @brief Constructor of the GameOfLife class
+    /// @param rows The number of rows in the grid
+    /// @param cols The number of columns in the grid
+    /// @param n_generations The number of generations to simulate
+    GameOfLife(int rows = 20, int cols = 40, int n_generations = 100) : rows(rows), cols(cols), n_generations(n_generations)
     {
+        if (rows <= 0 || cols <= 0)
+        {
+            throw std::invalid_argument("Invalid grid size");
+        }
+        if (rows > 100 || cols > 100)
+        {
+            throw std::invalid_argument("Grid size too large");
+        }
+        if (n_generations <= 0 || n_generations > 500)
+        {
+            throw std::invalid_argument("Invalid number of generations");
+        }
         // Allocate memory for grid
-        this->grid = new std::vector<std::vector<bool>>(ROWS, std::vector<bool>(COLS, false));
+        this->grid = new std::vector<std::vector<bool>>(rows, std::vector<bool>(cols, false));
 
         srand(time(0)); // Seed for random number generation
 
-        for (int i = 0; i < ROWS; ++i)
+        for (int i = 0; i < this->rows; ++i)
         {
-            for (int j = 0; j < COLS; ++j)
+            for (int j = 0; j < this->cols; ++j)
             {
                 (*this->grid)[i][j] = rand() % 2 == 1;
             }
         }
     }
 
+    /// @brief Destructor, free memory
     ~GameOfLife()
     {
         delete grid;
     }
 
-    void printGrid();
-    void updateGrid();
+    void play();
+
+    int getRows() const { return rows; }
+    int getCols() const { return cols; }
 
 private:
     std::vector<std::vector<bool>> *grid;
-    const int ROWS = 20;
-    const int COLS = 40;
+    int rows = 20;
+    int cols = 40;
+    int n_generations = 100;
 
-    int countNeighbors(int row, int col)
-    {
-        int count = 0;
-        int directions[] = {-1, 0, 1};
-
-        for (int i : directions)
-        {
-            for (int j : directions)
-            {
-                if (i == 0 && j == 0)
-                    continue; // Avoid error when checking boundaries
-
-                int newRow = row + i;
-                int newCol = col + j;
-
-                if (newRow >= 0 && newRow < ROWS && newCol >= 0 && newCol < COLS)
-                {
-                    count += (*grid)[newRow][newCol] ? 1 : 0; // Increment count if neighbor is alive
-                }
-            }
-        }
-
-        return count;
-    }
+    void printGrid();
+    void updateGrid();
+    short countNeighbors(int row, int col);
 };

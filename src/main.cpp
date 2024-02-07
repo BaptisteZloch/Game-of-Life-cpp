@@ -1,20 +1,11 @@
-#include <iostream>
-#include <vector>
-#include <cstdlib>
-#include <ctime>
-#include <unistd.h>
+
 #include "game_of_life.hpp"
 
 int main()
 {
-    GameOfLife game;
+    GameOfLife *game = new GameOfLife(20, 40, 100);
 
-    for (int generation = 1; generation <= 100; ++generation)
-    {
-        game.printGrid();
-        game.updateGrid();
-        usleep(100000); // Pause de 100 millisecondes entre les générations
-    }
+    game->play();
 
     return 0;
 }
