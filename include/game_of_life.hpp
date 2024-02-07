@@ -5,7 +5,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <unistd.h>
-
+#include "cell.hpp"
 class GameOfLife
 {
 public:
@@ -28,7 +28,7 @@ public:
             throw std::invalid_argument("Invalid number of generations");
         }
         // Allocate memory for grid
-        this->grid = new std::vector<std::vector<bool>>(rows, std::vector<bool>(cols, false));
+        this->grid = new std::vector<std::vector<Cell>>(rows, std::vector<Cell>(cols, Cell(false)));
 
         srand(time(0)); // Seed for random number generation
 
@@ -36,7 +36,7 @@ public:
         {
             for (int j = 0; j < this->cols; ++j)
             {
-                (*this->grid)[i][j] = rand() % 2 == 1;
+                (*this->grid)[i][j].setState(rand() % 2 == 1);
             }
         }
     }
@@ -53,7 +53,7 @@ public:
     int getCols() const { return cols; }
 
 private:
-    std::vector<std::vector<bool>> *grid;
+    std::vector<std::vector<Cell>> *grid;
     int rows = 20;
     int cols = 40;
     int n_generations = 100;

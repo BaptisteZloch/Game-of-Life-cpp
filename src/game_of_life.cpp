@@ -21,11 +21,10 @@ short GameOfLife::countNeighbors(int row, int col)
 
             if (newRow >= 0 && newRow < rows && newCol >= 0 && newCol < cols)
             {
-                count += (*grid)[newRow][newCol] ? 1 : 0; // Increment count if neighbor is alive
+                count += (*grid)[newRow][newCol].getState() ? 1 : 0; // Increment count if neighbor is alive
             }
         }
     }
-
     return count;
 }
 
@@ -39,7 +38,7 @@ void GameOfLife::printGrid()
     {
         for (int j = 0; j < this->cols; ++j)
         {
-            std::cout << ((*this->grid)[i][j] ? "█" : " ");
+            std::cout << ((*this->grid)[i][j].toString());
         }
         std::cout << std::endl;
     }
@@ -56,15 +55,15 @@ void GameOfLife::updateGrid()
         {
             neighbors = this->countNeighbors(i, j);
 
-            if ((*this->grid)[i][j])
+            if ((*this->grid)[i][j].getState())
             {
                 // Cellule vivante
-                (*this->grid)[i][j] = (neighbors == 2 || neighbors == 3);
+                (*this->grid)[i][j].setState((neighbors == 2 || neighbors == 3));
             }
             else
             {
                 // Cellule morte
-                (*this->grid)[i][j] = (neighbors == 3);
+                (*this->grid)[i][j].setState(neighbors == 3);
             }
         }
     }

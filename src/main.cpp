@@ -3,7 +3,7 @@
 
 int main()
 {
-    GameOfLife *game = new GameOfLife(20, 40, 100);
+    GameOfLife *game = new GameOfLife(20, 40, 10);
 
     game->play();
 
